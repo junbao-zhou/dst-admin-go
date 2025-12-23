@@ -20,13 +20,13 @@ jobs:
       - name: Build (docker compose)
         env:
           REGISTRY: ${{ secrets.ALIYUN_REGISTRY }}
-          NAMESPACE: ${{ secrets.ALIYUN_NAMESPACE }}
+          NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
           IMAGE_NAME: dst-admin-go
         run: docker compose build
 
       - name: Push (docker compose)
         env:
           REGISTRY: ${{ secrets.ALIYUN_REGISTRY }}
-          NAMESPACE: ${{ secrets.ALIYUN_NAMESPACE }}
+          NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
           IMAGE_NAME: dst-admin-go
         run: docker compose push
