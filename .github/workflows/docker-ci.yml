@@ -2,6 +2,9 @@ name: Build and Push Don't Starve Admin Go Docker Image
 on:
   push
 
+env:
+  ALIYUN_REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com/
+
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -26,6 +29,12 @@ jobs:
           NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
         run: docker compose push
 
+      - name: Build (docker compose)
+        env:
+          REGISTRY: ${{ env.ALIYUN_REGISTRY }}
+          NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
+        run: docker compose build
+
       - name: Log in to Aliyun ACR
         uses: aliyun/acr-login@v1
         with:
@@ -33,15 +42,9 @@ jobs:
           username: ${{ secrets.ALIYUN_USERNAME }}
           password: ${{ secrets.ALIYUN_PASSWORD }}
 
-      - name: Build (docker compose)
-        env:
-          REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com/
-          NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
-        run: docker compose build
-
       - name: Push (docker compose)
         env:
-          REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com/
+          REGISTRY: ${{ env.ALIYUN_REGISTRY }}
           NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
         run: docker compose push
 
