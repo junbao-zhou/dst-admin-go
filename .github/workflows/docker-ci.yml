@@ -1,6 +1,7 @@
 name: Build and Push Don't Starve Admin Go Docker Image
 on:
-  push
+  - push
+  - workflow_dispatch
 
 env:
   ALIYUN_REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com/
