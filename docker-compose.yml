@@ -1,0 +1,13 @@
+version: '3'
+services:
+  docker:
+    env_file:
+      - ./.env
+
+    image: ${REGISTRY}/${NAMESPACE}/${IMAGE_NAME}:${TAG}
+    container_name: ${IMAGE_NAME}_${TAG}
+    build:
+      context: .
+      dockerfile: ${IMAGE_NAME}.dockerfile
+      args:
+        TAG: ${TAG}
