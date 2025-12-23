@@ -33,13 +33,25 @@ jobs:
           username: ${{ secrets.ALIYUN_USERNAME }}
           password: ${{ secrets.ALIYUN_PASSWORD }}
 
-      - name: Tag and Push to Aliyun ACR
+      - name: Build (docker compose)
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com/
           NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
-          IMAGE_NAME: dst-admin-go
-          TAG: 1.5.1
-        run: |
-          docker tag ${DOCKER_USERNAME}/${IMAGE_NAME}:${TAG} ${REGISTRY}${NAMESPACE}/${IMAGE_NAME}:${TAG}
-          docker push ${REGISTRY}${NAMESPACE}/${IMAGE_NAME}:${TAG}
+        run: docker compose build
+
+      - name: Push (docker compose)
+        env:
+          REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com/
+          NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
+        run: docker compose push
+
+      # - name: Tag and Push to Aliyun ACR
+      #   env:
+      #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com/
+      #     NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
+      #     IMAGE_NAME: dst-admin-go
+      #     TAG: 1.5.1
+      #   run: |
+      #     docker tag ${DOCKER_USERNAME}/${IMAGE_NAME}:${TAG} ${REGISTRY}${NAMESPACE}/${IMAGE_NAME}:${TAG}
+      #     docker push ${REGISTRY}${NAMESPACE}/${IMAGE_NAME}:${TAG}
