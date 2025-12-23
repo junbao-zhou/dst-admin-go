@@ -20,20 +20,20 @@ jobs:
       - name: Login to Aliyun Container Registry (ACR)
         uses: aliyun/acr-login@v1
         with:
-          login-server: ${{ secrets.ALIYUN_REGISTRY }}
+          region-id: ${{ secrets.ALIYUN_REGION_ID }}
           username: ${{ secrets.ALIYUN_USERNAME }}
           password: ${{ secrets.ALIYUN_PASSWORD }}
 
       - name: Build (docker compose)
         env:
-          REGISTRY: ${{ secrets.ALIYUN_REGISTRY }}
+          REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com
           NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
           IMAGE_NAME: dst-admin-go
         run: docker compose build
 
       - name: Push (docker compose)
         env:
-          REGISTRY: ${{ secrets.ALIYUN_REGISTRY }}
+          REGISTRY: registry.${{ secrets.ALIYUN_REGION_ID }}.aliyuncs.com
           NAMESPACE: ${{ secrets.ALIYUN_USERNAME }}
           IMAGE_NAME: dst-admin-go
         run: docker compose push
