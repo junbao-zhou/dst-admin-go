@@ -1,3 +1,4 @@
+ARG TAG
 FROM hujinbo23/dst-admin-go:${TAG}
 
 COPY install-server.sh /app/install-server.sh
